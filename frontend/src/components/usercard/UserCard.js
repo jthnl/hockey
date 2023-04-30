@@ -9,6 +9,7 @@ const UserCard = ({ player }) => {
   const [eventCounts, setEventCounts] = useState(null);
   const [teamName, setTeamName] = useState(null);
 
+  // Get Player Card details
   useEffect(() => {
     if (!player) return;
 
@@ -26,13 +27,18 @@ const UserCard = ({ player }) => {
 
   return (
     <Card fluid className="UserCard">
+      {/* Profile Image */}
       <Image src={randomPic(player)} wrapped ui={false} />
+
+      {/* Player Details */}
       <Card.Content>
         <Card.Header>{player}</Card.Header>
         <Card.Meta>
           <span>{teamName}</span>
         </Card.Meta>
       </Card.Content>
+
+      {/* Player Statistics */}
       <Card.Content>
         <Grid columns={2} relaxed="very">
           {Object.entries(eventCounts).map(([eventName, details]) => (
@@ -47,9 +53,11 @@ const UserCard = ({ player }) => {
           ))}
         </Grid>
       </Card.Content>
+
+      {/* Image Credit */}
       <Card.Content extra>
         <a href="http://www.freepik.com">
-          Image taken from pikisuperstar / Freepik
+          Avatar images from pikisuperstar / Freepik
         </a>
       </Card.Content>
     </Card>

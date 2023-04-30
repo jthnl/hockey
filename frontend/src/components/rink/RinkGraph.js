@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Plot from "react-plotly.js";
+
+import updateItemSizeAspectRatio from "../../actions/aspectRatio"
 import "./RinkGraph.css";
 import rinkImage from "./rink.png";
 
+// Rink constants
+const id = "rink-graph-container";
 const rinkWidth = 200;
 const rinkDepth = 85;
 const aspectRatio =  rinkWidth / rinkDepth;
@@ -11,22 +15,14 @@ const RinkGraph = ({data}) => {
   const [plotWidth, setPlotWidth] = useState(rinkWidth);
   const [plotHeight, setPlotHeight] = useState(rinkDepth);
 
+  // force rink display aspect ratio to stay constant
   useEffect(() => {
-    const updateSize = () => {
-      const container = document.getElementById("rink-graph-container");
-      const newHeight = container.clientHeight;
-      const newWidth = newHeight / aspectRatio;
-      
-      setPlotWidth(newWidth);
-      setPlotHeight(newHeight);
-    };
-
-    updateSize();
-
-    window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
+    updateItemSizeAspectRatio(id, aspectRatio, setPlotWidth, setPlotHeight);
+    window.addEventListener("resize", updateItemSizeAspectRatio);
+    return () => window.removeEventListener("resize", updateItemSizeAspectRatio);
   }, []);
 
+  // plotly rink layout
   const layout = {
     autosize: true,
     showlegend: false,
@@ -69,13 +65,12 @@ const RinkGraph = ({data}) => {
   };
 
   return (
-    <div id="rink-graph-container" className="RinkGraph">
+    <div id={id} className="RinkGraph">
       <Plot
         data={data}
         layout={layout}
         config={{displayModeBar: false}}
         useResizeHandler
-        className="RinkGraphPlot"
       />
     </div>
   );

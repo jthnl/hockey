@@ -11,6 +11,7 @@ const Selection = ({ onPlayerSelect, onEventSelect }) => {
   const [playerOptions, setPlayerOptions] = useState([]);
   const [eventOptions, setEventOptions] = useState([]);
 
+  // get list of Players and Events
   useEffect(() => {
     const fetchData = async () => {
       const players = await fetchPlayers();
@@ -23,6 +24,7 @@ const Selection = ({ onPlayerSelect, onEventSelect }) => {
     fetchData();
   }, []);
 
+  // event handlers
   const handlePlayerChange = (event, { value }) => {
     setSelectedPlayer(value);
     onPlayerSelect(value);
@@ -41,7 +43,8 @@ const Selection = ({ onPlayerSelect, onEventSelect }) => {
             <h1>Filter</h1>
           </Card.Header>
 
-          <div className="DropdownContainer">
+          {/* Player dropdown */}
+          <div className="DropdownItemContainer">
             <h3>Player</h3>
             <Dropdown
               placeholder="Select a player"
@@ -53,8 +56,10 @@ const Selection = ({ onPlayerSelect, onEventSelect }) => {
               value={selectedPlayer}
             />
           </div>
+
+          {/* Only show Event dropdown when Player is selected */}
           {selectedPlayer != null && (
-            <div className="DropdownContainer">
+            <div className="DropdownItemContainer">
               <h3>Event</h3>
               <Dropdown
                 placeholder="Select an Event"

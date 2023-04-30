@@ -1,5 +1,7 @@
+// backend calls to get data
 const API_BASE_URL = "http://localhost:8080";
 
+// returns a list of players
 export const fetchPlayers = async () => {
   const response = await fetch(`${API_BASE_URL}/players`);
   const data = await response.json();
@@ -10,6 +12,7 @@ export const fetchPlayers = async () => {
   }));
 };
 
+// returns a list of events
 export const fetchUniqueEvents = async () => {
   const response = await fetch(`${API_BASE_URL}/uniqueEvents`);
   const data = await response.json();
@@ -20,14 +23,7 @@ export const fetchUniqueEvents = async () => {
   }));
 };
 
-export const fetchPlayerEventCounts = async (player) => {
-  const response = await fetch(
-    `${API_BASE_URL}/playerEventCounts?player=${encodeURIComponent(player)}`
-  );
-  const data = await response.json();
-  return data;
-};
-
+// returns a list of events by player
 export const fetchFilteredEvents = async (player, event) => {
   const url = event
     ? `${API_BASE_URL}/filteredEvents?player=${encodeURIComponent(
@@ -40,10 +36,20 @@ export const fetchFilteredEvents = async (player, event) => {
   return data;
 };
 
+// returns a list of event counts by player
+export const fetchPlayerEventCounts = async (player) => {
+  const response = await fetch(
+    `${API_BASE_URL}/playerEventCounts?player=${encodeURIComponent(player)}`
+  );
+  const data = await response.json();
+  return data;
+};
+
+// returns the player's team
 export const fetchPlayerTeam = async (player) => {
-    const response = await fetch(
-      `${API_BASE_URL}/playerTeam?player=${encodeURIComponent(player)}`
-    );
-    const data = await response.json();
-    return data;
-  };
+  const response = await fetch(
+    `${API_BASE_URL}/playerTeam?player=${encodeURIComponent(player)}`
+  );
+  const data = await response.json();
+  return data;
+};

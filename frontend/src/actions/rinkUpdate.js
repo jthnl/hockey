@@ -10,15 +10,12 @@ const customColorscale = [
     [1, "rgba(150, 30, 3, 0.8)"],
   ];
 
-const handlePlotUpdate = async (player, event, setGraphData) => {
+// Update RinkGraph data
+const rinkUpdate = async (player, event, setGraphData) => {
   if (!player) return;
 
-  console.log("Updating plot with player:", player);
-  console.log("Updating plot with event:", event);
-
+  // Get Player's Events
   const data = await fetchFilteredEvents(player, event);
-  console.log("Fetched data:", data);
-
   const plotData = data.events.map((eventGroup) => ({
     x: eventGroup.y,
     y: eventGroup.x,
@@ -27,14 +24,13 @@ const handlePlotUpdate = async (player, event, setGraphData) => {
     name: eventGroup.event,
   }));
 
-  // Add 2D histogram contour plot
+  // 2D histogram contour plot
   plotData.unshift({
     x: data.events.flatMap((eventGroup) => eventGroup.y),
     y: data.events.flatMap((eventGroup) => eventGroup.x),
     name: "density",
     ncontours: 20,
     colorscale: customColorscale,
-    // reversescale: true,
     showscale: false,
     type: "histogram2dcontour",
     line: { width: 0 },
@@ -43,4 +39,4 @@ const handlePlotUpdate = async (player, event, setGraphData) => {
   setGraphData(plotData);
 };
 
-export default handlePlotUpdate;
+export default rinkUpdate;

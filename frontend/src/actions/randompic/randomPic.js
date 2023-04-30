@@ -3,16 +3,19 @@ import pic2 from "./pic/user-pic-2.png";
 import pic3 from "./pic/user-pic-3.png";
 import pic4 from "./pic/user-pic-4.png";
 
+// Hash Player string to integer
+// This ensures that player will always have the same random picture
 const stringToHashCode = (str) => {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
     hash = (hash << 5) - hash + char;
-    hash |= 0; // Convert to a 32-bit integer
+    hash |= 0; 
   }
   return Math.abs(hash);
 };
 
+// Get a random profile picture
 const randomPic = (player) => {
   const index = stringToHashCode(player) % 4;
   switch (index) {
