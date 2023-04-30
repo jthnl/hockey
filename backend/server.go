@@ -44,7 +44,7 @@ func main() {
 	router.HandleFunc("/playerEventCounts", GetPlayerEventCounts).Methods("GET")
 	router.HandleFunc("/playerTeam", GetPlayerTeam).Methods("GET")
 
-
+	// allow CORS 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
@@ -54,7 +54,7 @@ func main() {
 
 	handler := c.Handler(router)
 
-	log.Fatal(http.ListenAndServe(":8080", handler))
+	log.Fatal(http.ListenAndServe(":30090", handler))
 }
 
 func readCSV() ([]Event, error) {
