@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "30090:30090"
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "30091:30091"
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_BASE_URL=http://backend:30090
