@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
@@ -40,10 +39,10 @@ type Event struct {
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/players", GetPlayers).Methods("GET")
-	router.HandleFunc("/events", GetEvents).Methods("GET")
-	router.HandleFunc("/events/player/{player}", GetEventsByPlayer).Methods("GET")
-	router.HandleFunc("/filteredEvents", GetFilteredEvents).Methods("GET")
 	router.HandleFunc("/uniqueEvents", GetUniqueEvents).Methods("GET")
+	router.HandleFunc("/filteredEvents", GetFilteredEvents).Methods("GET")
+	router.HandleFunc("/playerEventCounts", GetPlayerEventCounts).Methods("GET")
+	router.HandleFunc("/playerTeam", GetPlayerTeam).Methods("GET")
 
 
 	c := cors.New(cors.Options{
@@ -130,38 +129,6 @@ func GetPlayers(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(players)
 }
 
-func GetEvents(w http.ResponseWriter, r *http.Request) {
-	events, err := readCSV()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(events)
-}
-
-func GetEventsByPlayer(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	player := strings.ToLower(params["player"])
-
-	events, err := readCSV()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	filteredEvents := make([]Event, 0)
-	for _, event := range events {
-		if strings.ToLower(event.Player) == player || strings.ToLower(event.Player2) == player {
-			filteredEvents = append(filteredEvents, event)
-		}
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(filteredEvents)
-}
-
 func GetUniqueEvents(w http.ResponseWriter, r *http.Request) {
 	events, err := readCSV()
 	if err != nil {
@@ -184,10 +151,10 @@ func GetUniqueEvents(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(uniqueEvents)
 }
 
+
 func GetFilteredEvents(w http.ResponseWriter, r *http.Request) {
 	player := r.URL.Query().Get("player")
 	eventFilter := r.URL.Query().Get("event")
-	flipAxis := r.URL.Query().Get("flipAxis")
 
 	if player == "" {
 		http.Error(w, "player parameter is required", http.StatusBadRequest)
@@ -236,25 +203,89 @@ func GetFilteredEvents(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(result)
 }
 
+func GetPlayerEventCounts(w http.ResponseWriter, r *http.Request) {
+    player := r.URL.Query().Get("player")
 
+    if player == "" {
+        http.Error(w, "Missing player parameter", http.StatusBadRequest)
+        return
+    }
 
+    events, err := readCSV()
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
 
-func generateZValues(xCoords, yCoords []string, numRows, numCols int) [][]int {
-	zValues := make([][]int, numRows)
+    type DetailCounts struct {
+        Detail1 map[string]int `json:"detail_1"`
+        Detail2 map[string]int `json:"detail_2"`
+        Detail3 map[string]int `json:"detail_3"`
+        Detail4 map[string]int `json:"detail_4"`
+    }
 
-	for i := range zValues {
-		zValues[i] = make([]int, numCols)
+    eventCounts := make(map[string]*DetailCounts)
+    for _, event := range events {
+        if event.Player == player {
+            if _, ok := eventCounts[event.Event]; !ok {
+                eventCounts[event.Event] = &DetailCounts{
+                    Detail1: make(map[string]int),
+                    Detail2: make(map[string]int),
+                    Detail3: make(map[string]int),
+                    Detail4: make(map[string]int),
+                }
+            }
+
+            if event.Detail1 != "" {
+                eventCounts[event.Event].Detail1[event.Detail1]++
+            }
+            if event.Detail2 != "" {
+                eventCounts[event.Event].Detail2[event.Detail2]++
+            }
+            if event.Detail3 != "" {
+                eventCounts[event.Event].Detail3[event.Detail3]++
+            }
+            if event.Detail4 != "" {
+                eventCounts[event.Event].Detail4[event.Detail4]++
+            }
+        }
+    }
+
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(eventCounts)
+}
+
+func GetPlayerTeam(w http.ResponseWriter, r *http.Request) {
+	player := r.URL.Query().Get("player")
+	if player == "" {
+		http.Error(w, "player parameter is required", http.StatusBadRequest)
+		return
 	}
 
-	for _, x := range xCoords {
-		xVal, _ := strconv.Atoi(x)
-		for _, y := range yCoords {
-			yVal, _ := strconv.Atoi(y)
-			xIndex := xVal % numRows
-			yIndex := yVal % numCols
-			zValues[xIndex][yIndex]++
+	events, err := readCSV()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	var team string
+	for _, event := range events {
+		if event.Player == player {
+			team = event.Team
+			break
 		}
 	}
 
-	return zValues
+	if team == "" {
+		http.Error(w, "Player not found", http.StatusNotFound)
+		return
+	}
+
+	result := map[string]interface{}{
+		"player": player,
+		"team":   team,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(result)
 }

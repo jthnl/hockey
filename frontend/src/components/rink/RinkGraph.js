@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Plot from "react-plotly.js";
 import "./RinkGraph.css";
+import rinkImage from "./rink.png";
+
+const rinkWidth = 200;
+const rinkDepth = 85;
+const aspectRatio =  rinkWidth / rinkDepth;
 
 const RinkGraph = ({data}) => {
-  const aspectRatio =  200 / 85;
-
-  const [plotWidth, setPlotWidth] = useState(800);
-  const [plotHeight, setPlotHeight] = useState(450);
+  const [plotWidth, setPlotWidth] = useState(rinkWidth);
+  const [plotHeight, setPlotHeight] = useState(rinkDepth);
 
   useEffect(() => {
     const updateSize = () => {
@@ -27,25 +30,18 @@ const RinkGraph = ({data}) => {
   const layout = {
     autosize: true,
     showlegend: false,
-    // legend: {"orientation": "h"},
     width: plotWidth,
     height: plotHeight,
-    margin: {
-      l: 0,
-      r: 0,
-      b: 0,
-      t: 0,
-      pad: 0,
-    },
+    margin: { l: 0, r: 0, b: 0, t: 0, pad: 0 },
     xaxis: {
-      range: [0, 85],
+      range: [0, rinkDepth],
       showgrid: false,
       showline: false,
       fixedrange: true,
       visible: false
     },
     yaxis: {
-      range: [0, 200],
+      range: [0, rinkWidth],
       showgrid: false,
       showline: false,
       fixedrange: true,
@@ -55,13 +51,13 @@ const RinkGraph = ({data}) => {
     },
     images: [
       {
-        source: "https://i.imgur.com/yhc9sKd.png",
+        source: rinkImage,
         xref: "x",
         yref: "y",
         x: 0,
         y: 0,
-        sizex: 85,
-        sizey: 200,
+        sizex: rinkDepth,
+        sizey: rinkWidth,
         opacity: 1,
         layer: "top",
         xanchor: "left",
@@ -72,20 +68,12 @@ const RinkGraph = ({data}) => {
     plot_bgcolor: "rgba(0,0,0,0)",
   };
 
-  const config = {
-    displayModeBar: false,
-  };
-
-  // useEffect(() => {
-  //   Plotly.Plots.resize("plotlyChart");
-  //  }, [sideBarOpen]);
-
   return (
     <div id="rink-graph-container" className="RinkGraph">
       <Plot
         data={data}
         layout={layout}
-        config={config}
+        config={{displayModeBar: false}}
         useResizeHandler
         className="RinkGraphPlot"
       />

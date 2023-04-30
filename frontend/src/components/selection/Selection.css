@@ -1,4 +1,10 @@
 .SelectionContainer{
     /* color: white; */
-    margin-left: 15px;
+    /* margin-left: 15px; */
+
+}
+
+
+.DropdownContainer{
+    padding-top: 1rem;
 }
