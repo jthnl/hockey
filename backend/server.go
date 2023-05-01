@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
@@ -37,6 +37,11 @@ type Event struct {
 }
 
 func main() {
+	port, exists := os.LookupEnv("PORT")
+    if !exists {
+        port = "4000"
+    }
+
 	router := mux.NewRouter()
 	router.HandleFunc("/players", GetPlayers).Methods("GET")
 	router.HandleFunc("/uniqueEvents", GetUniqueEvents).Methods("GET")
@@ -53,8 +58,8 @@ func main() {
 	})
 
 	handler := c.Handler(router)
-
-	log.Fatal(http.ListenAndServe(":30090", handler))
+	fmt.Println("Running on port: ", port)
+	log.Fatal(http.ListenAndServe(":" + port, handler))
 }
 
 func readCSV() ([]Event, error) {
