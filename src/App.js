@@ -36,7 +36,7 @@ const App = () => {
             />
           </Grid.Column>
 
-          {/* Rink Graph */}
+          {/* Rink Graph  */}
           <Grid.Column width={8}>
             <RinkGraph data={graphData} />
           </Grid.Column>
