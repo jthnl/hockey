@@ -1,5 +1,5 @@
 // backend calls to get data
-const API_BASE_URL = "https://http://flamessrv.jath.ca:30090/";
+const API_BASE_URL = "http://flamessrv.jath.ca:30090";
 
 // returns a list of players
 export const fetchPlayers = async () => {
