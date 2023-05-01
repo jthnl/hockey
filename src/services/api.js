@@ -1,5 +1,5 @@
 // backend calls to get data
-const API_BASE_URL = "https://flames-phase-2.herokuapp.com/";
+const API_BASE_URL = "https://http://flamessrv.jath.ca:30090/";
 
 // returns a list of players
 export const fetchPlayers = async () => {
