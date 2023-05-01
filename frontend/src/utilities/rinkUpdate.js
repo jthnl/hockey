@@ -10,6 +10,19 @@ const customColorscale = [
     [1, "rgba(252, 30, 3, 0.2)"],
 ];
 
+const markerColorMap = {
+  "Faceoff Win": 'rgb(190, 61, 255)',
+  "Puck Recovery": 'rgb(72, 64, 229)',
+  "Dump In/Out": 'rgb(67, 198, 250)',
+  "Play": 'rgb(50, 227, 145)',
+  "Shot": 'rgb(110, 251, 55)',
+  "Penalty Taken": 'rgb(20, 90, 130)',
+  "Zone Entry": 'rgb(20, 130, 64)',
+  "Takeaway": 'rgb(148, 67, 209)',
+  "Incomplete Play": 'rgb(80, 230, 250)',
+  "Goal": 'rgb(207, 31, 81)',
+};
+
 // Update RinkGraph data
 const rinkUpdate = async (player, event, setGraphData) => {
   if (!player) return;
@@ -23,6 +36,7 @@ const rinkUpdate = async (player, event, setGraphData) => {
     type: "scatter",
     name: eventGroup.event,
     marker: {
+      color: markerColorMap[eventGroup.event],
       line: {
         color: 'rgb(100, 100, 100, 0.2)',
         width: 1
