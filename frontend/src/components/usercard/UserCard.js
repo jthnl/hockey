@@ -5,6 +5,19 @@ import randomPic from "../../utilities/randomPic";
 
 import { fetchPlayerEventCounts, fetchPlayerTeam } from "../../services/api";
 
+const eventPluralMap = {
+  "Faceoff Win": "Faceoff Wins",
+  "Puck Recovery": "Puck Recoveries",
+  "Dump In/Out": "Dump Ins/Outs",
+  "Play": "Plays",
+  "Shot": "Shots",
+  "Penalty Taken": "Penalties Taken",
+  "Zone Entry": "Zone Entries",
+  "Takeaway": "Takeaways",
+  "Incomplete Play": "Incomplete Plays",
+  "Goal": "Goals",
+};
+
 const UserCard = ({ player }) => {
   const [eventCounts, setEventCounts] = useState(null);
   const [teamName, setTeamName] = useState(null);
@@ -43,7 +56,7 @@ const UserCard = ({ player }) => {
         <Grid columns={2} relaxed="very">
           {Object.entries(eventCounts).map(([eventName, details]) => (
             <Grid.Column key={eventName}>
-              <h4>{eventName}:</h4>
+              <h4>{eventPluralMap[eventName]}:</h4>
               {Object.entries(details.detail_1).map(([detailName, count]) => (
                 <p key={detailName}>
                   {detailName}: {count}
