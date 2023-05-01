@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Image, Grid } from "semantic-ui-react";
 import "./UserCard.css";
-import randomPic from "../../actions/randompic/randomPic";
+import randomPic from "../../utilities/randomPic";
 
 import { fetchPlayerEventCounts, fetchPlayerTeam } from "../../services/api";
 

@@ -6,7 +6,7 @@ import Selection from "./components/selection/Selection";
 import RinkGraph from "./components/rink/RinkGraph";
 import UserCard from "./components/usercard/UserCard";
 
-import rinkUpdate from "./actions/rinkUpdate";
+import rinkUpdate from "./utilities/rinkUpdate";
 
 const App = () => {
   const [graphData, setGraphData] = useState([]);

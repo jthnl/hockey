@@ -1,5 +1,5 @@
 // backend calls to get data
-const API_BASE_URL = "http://backend:30090";
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 // returns a list of players
 export const fetchPlayers = async () => {

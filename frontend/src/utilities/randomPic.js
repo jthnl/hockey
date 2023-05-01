@@ -1,7 +1,7 @@
-import pic1 from "./pic/user-pic-1.png";
-import pic2 from "./pic/user-pic-2.png";
-import pic3 from "./pic/user-pic-3.png";
-import pic4 from "./pic/user-pic-4.png";
+import pic1 from "../assets/user-pic-1.png";
+import pic2 from "../assets/user-pic-2.png";
+import pic3 from "../assets/user-pic-3.png";
+import pic4 from "../assets/user-pic-4.png";
 
 // Hash Player string to integer
 // This ensures that player will always have the same random picture

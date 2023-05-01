@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Plot from "react-plotly.js";
 
-import updateItemSizeAspectRatio from "../../actions/aspectRatio"
+import updateItemSizeAspectRatio from "../../utilities/aspectRatio"
 import "./RinkGraph.css";
-import rinkImage from "./rink.png";
+import rinkImage from "../../assets/rink.png";
 
 // Rink constants
 const id = "rink-graph-container";
