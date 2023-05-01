@@ -1,7 +1,7 @@
 # Hockey
 Calgary Flames - Phase Two Coding Project
 
-![website image](./images/image1.png)
+![website image](https://github.com/jthnl/hockey/blob/main/images/Image1.png)
 
 Data from https://github.com/bigdatacup/Big-Data-Cup-2021
 
