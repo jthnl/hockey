@@ -1,5 +1,5 @@
 # Hockey
-Calgary Flames - Phase Two Coding Project
+Coding Project
 
 ![website image](https://github.com/jthnl/hockey/blob/main/images/Image1.png)
 
